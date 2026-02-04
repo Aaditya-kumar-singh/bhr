@@ -44,7 +44,7 @@ export default function Navbar() {
               className="object-cover"
             />
           </div>
-          <div className="hidden md:block">
+          <div>
             <h1 className="text-white font-bold text-lg leading-none tracking-wide">
               BHARDWAJ
             </h1>
