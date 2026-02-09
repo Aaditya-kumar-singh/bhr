@@ -1,35 +1,28 @@
-# Deploying to Cloudflare Pages
+# Deploying to Cloudflare Pages (NOT Workers)
 
-This project is configured to use `@cloudflare/next-on-pages` for deployment on Cloudflare Pages.
+**IMPORTANT:** This project must be deployed as a **Cloudflare Page**, not a generic Worker.
 
-## Prerequisites
+## 1. Delete Incorrect Project (Optional)
+If you created a "Worker" project that asks for a "Deploy command" in the build settings, it is likely the wrong project type. Consider deleting it to avoid confusion or simply create a new one.
 
-1.  A GitHub account with this repository.
-2.  A Cloudflare account.
+## 2. Create the Correct Project
+1.  Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2.  Go to **Workers & Pages**.
+3.  Click **Create application**.
+4.  **CLICK THE "PAGES" TAB** (This is the critical step! Do not stay on the "Workers" tab).
+5.  Click **Connect to Git**.
+6.  Select your repository (`bhr`).
 
-## Step-by-Step Guide
+## 3. Configure Build Settings
+*   **Project Name**: `bhr-website` (or similar).
+*   **Production Branch**: `master`.
+*   **Framework Preset**: `None`.
+*   **Build Command**: `npm run pages:build`
+*   **Build Output Directory**: `.vercel/output/static`
 
-1.  **Log in to Cloudflare Dashboard**: Go to [dash.cloudflare.com](https://dash.cloudflare.com) and log in.
-2.  **Navigate to Pages**: Click on "Workers & Pages" in the sidebar, then "Create Application" -> "Pages" -> "Connect to Git".
-3.  **Select Repository**: Choose your GitHub account and select the `bhr` repository.
-4.  **Configure Build Settings**:
-    *   **Project Name**: Leave as is or change it (e.g., `bhr-website`).
-    *   **Production Branch**: `master`.
-    *   **Framework Preset**: Select "Next.js (Static HTML Export)" OR "None". Ideally, select "None" and use the custom command below.
-    *   **Build Command**: `npm run pages:build`
-    *   **Build Output Directory**: `.vercel/output/static` (Crucial!)
-5.  **Environment Variables (Optional but Recommended)**:
-    *   Add a variable `NODE_VERSION` with value `20` (or higher) if needed, though Cloudflare usually picks up the right one.
-    *   Under "Compatibility flags", ensure `nodejs_compat` is added if prompted, or set it in `wrangler.toml` if you were using Wrangler locally. For dashboard deployment, usually you just need the build settings.
-
-## Important Notes
-
-*   This setup uses the `@cloudflare/next-on-pages` adapter which allows server-side features of Next.js to work on Cloudflare Pages.
-*   If you encounter issues with images, ensure `images.unsplash.com` is accessible and configured correctly in `next.config.ts` (already done).
+## 4. Save and Deploy
+Click **Save and Deploy**. Cloudflare handles the rest automatically.
 
 ## Troubleshooting
-
-If the build fails:
-1.  Check the logs in Cloudflare Dashboard.
-2.  Ensure you selected the correct Build Output Directory: `.vercel/output/static`.
-3.  Ensure the Build Command is `npm run pages:build`.
+*   **"Workers-specific command in a Pages project"**: You are using the wrong project type (Worker instead of Pages) or have extraneous settings in `wrangler.toml`.
+*   **"Peer dependency" errors**: resolved by the `.npmrc` file included in the repository.
